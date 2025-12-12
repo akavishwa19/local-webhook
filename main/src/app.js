@@ -27,7 +27,7 @@ app.post("/start-cooking", async (req, res) => {
     return res.status(200).send("order is placed");
   } catch (error) {
     console.log("error making http call with\n: ", error.message);
-     return res.status(500).send('"error making http call')
+    return res.status(500).send('"error making http call');
   }
 });
 
@@ -39,14 +39,31 @@ app.post("/webhook/recipe", async (req, res) => {
         .json({ status: "NOT ALLOWED", message: "resource not allowed" });
     }
 
+    //recieved webhook signature that we need to verify on our server to make sure that ok we recieved from the actual third party
     const webhookSignature = req.headers["x-webhook-signature"];
+
+    //get the timestamo from headers to verify pur signature
+    const webhookTimestamp = req.headers["x-timestamp"];
+
+    //from our envs that we got while registering the webhook for the first time
     const webhookSecret = process.env.WEBHOOK_SECRET;
 
+    //if the request is of past (significant past meaning it could be of an attacker), just ignore it
+    const now = Date.now();
+    if (Math.abs(now - webhookTimestamp) > 300000) {
+      return res
+        .status(403)
+        .json({ status: "NOT ALLOWED", message: "resource not allowed" });
+    }
+    
+
     const signatureValidity = verifySignature(
-      JSON.stringify(req.body),
+      JSON.stringify(req.body) + "-" + webhookTimestamp,
       webhookSecret,
       webhookSignature
     );
+
+    //if signature not verified , get out
     if (!signatureValidity) {
       return res
         .status(403)
@@ -59,7 +76,7 @@ app.post("/webhook/recipe", async (req, res) => {
     return res.status(200).json({ recievedData });
   } catch (error) {
     console.log(error);
-     return res.status(500).send('server error')
+    return res.status(500).send("server error");
   }
 });
 
