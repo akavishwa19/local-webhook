@@ -10,6 +10,9 @@ app.use(cors());
 
 const port = process.env.PORT;
 
+//prevent multiple requests with same signature in same window (we could have used uuids as well but clash of same hash is very rare , but ideal we should use uuids along with redis rather than in memory sets
+const usedHashes = new Set();
+
 app.get("/healthz", async (req, res) => {
   res.send("healthz works fine for server at port:" + port);
 });
@@ -55,7 +58,6 @@ app.post("/webhook/recipe", async (req, res) => {
         .status(403)
         .json({ status: "NOT ALLOWED", message: "resource not allowed" });
     }
-    
 
     const signatureValidity = verifySignature(
       JSON.stringify(req.body) + "-" + webhookTimestamp,
@@ -69,6 +71,13 @@ app.post("/webhook/recipe", async (req, res) => {
         .status(403)
         .json({ status: "NOT ALLOWED", message: "resource not allowed" });
     }
+
+    if (usedHashes.has(webhookSignature)) {
+      return res
+        .status(403)
+        .json({ status: "NOT ALLOWED", message: "resource not allowed" });
+    }
+    usedHashes.add(webhookSignature);
 
     const recievedData = req.body;
     console.log("final response: ", recievedData);
