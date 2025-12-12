@@ -18,7 +18,7 @@ app.post('/make-recipe', async (req, res) => {
         setTimeout(async () => {
             console.log('cooked creating recipe');
             try {
-                await fetch('http://localhost:3000/webhook/recipe', {
+                const response = await fetch('http://localhost:3000/webhook/recipe', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -33,6 +33,10 @@ app.post('/make-recipe', async (req, res) => {
                         }
                     })
                 })
+
+                const data =await response.json();
+                console.log('webhook response: ',data)
+
                 return res.status(200).json({
                     status: "OK",
                     data: {

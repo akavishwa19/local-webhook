@@ -11,6 +11,8 @@ app.get('/healthz', async (req, res) => {
     res.send('healthz works fine for server at port:' + port)
 });
 
+const whitelistedIps=['::1','127.0.0.1']
+
 app.post('/start-cooking', async (req, res) => {
     try {
         console.log('order is placed')
@@ -25,7 +27,7 @@ app.post('/start-cooking', async (req, res) => {
                 quantity: 5
             })
         })
-        return res.status(200).send('order is placed , pls wait till it processes')
+        return res.status(200).send('order is placed')
     } catch (error) {
         console.log("error making http call with\n: ", error.message)
     }
@@ -33,6 +35,10 @@ app.post('/start-cooking', async (req, res) => {
 
 app.post('/webhook/recipe', async (req, res) => {
     try {
+        if(!whitelistedIps.includes(req.ip)){
+            console.log('true')
+            return res.status(403).json({status:"NOT ALLOWED",message:'resource not allowed'})
+        }
         const recievedData=req.body;
         console.log('final response: ',recievedData);
         console.log('order served')
