@@ -6,7 +6,7 @@ const usedHashes = new Set();
 
 const startCooking = async (req, res) => {
   try {
-    console.log("order is placed");
+    //console.log("order is placed");
     await fetch("http://localhost:3001/make-recipe", {
       method: "POST",
       headers: {
@@ -16,7 +16,7 @@ const startCooking = async (req, res) => {
     });
     return res.status(200).send("order is placed");
   } catch (error) {
-    console.log("error making http call with\n: ", error.message);
+    //console.log("error making http call with\n: ", error.message);
     return res.status(500).send('"error making http call');
   }
 };
@@ -67,11 +67,11 @@ const webhookListener = async (req, res) => {
     usedHashes.add(webhookSignature);
 
     const recievedData = req.body;
-    console.log("final response: ", recievedData);
-    console.log("order served");
+    //console.log("final response: ", recievedData);
+    //console.log("order served");
     return res.status(200).json({ recievedData });
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     return res.status(500).send("server error");
   }
 };

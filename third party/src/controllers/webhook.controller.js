@@ -8,8 +8,8 @@ import {
 
 const makeRecipe = async (req, res) => {
   try {
-    console.log("recieved recipe data:", req.body);
-    console.log("recipe is cooking");
+    //console.log("recieved recipe data:", req.body);
+    //console.log("recipe is cooking");
 
     //build success object for persistence
     const persistentObj = {};
@@ -53,7 +53,7 @@ const makeRecipe = async (req, res) => {
         });
 
         const data = await response.json();
-        console.log("webhook response: ", data);
+        //console.log("webhook response: ", data);
 
         persistentObj.status = "SUCCESS";
 
@@ -68,7 +68,7 @@ const makeRecipe = async (req, res) => {
           },
         });
       } catch (error) {
-        console.log("error making http call with\n: ", error.message);
+        //console.log("error making http call with\n: ", error.message);
 
         persistentObj.payload = null;
         persistentObj.signature = null;
@@ -81,7 +81,7 @@ const makeRecipe = async (req, res) => {
       }
     }, 3000);
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
     return res.status(500).send("server error");
   }
 };
@@ -91,7 +91,7 @@ const fetchAllWebhooks = async (req, res) => {
     const data = await fetchWebhooks();
     return res.status(200).json(data);
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
     return res.status(500).send("server error");
   }
 };
