@@ -4,7 +4,7 @@ const LandingPage = ({ onGetStarted }) => {
       <div className="max-w-4xl w-full text-center">
         <div className="mb-8">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4">
-            Webhook Dashboard
+            Local Webhook Dashboard
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-2">
             Monitor and track all webhook events in real-time
@@ -23,7 +23,7 @@ const LandingPage = ({ onGetStarted }) => {
             </div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Secure</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              HMAC signature verification ensures authenticity
+              HMAC SHA256 signature verification ensures authenticity
             </p>
           </div>
 
@@ -64,7 +64,7 @@ const LandingPage = ({ onGetStarted }) => {
               <span>Processes orders, generates signed webhooks, and logs all events to MongoDB</span>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-purple-600 dark:text-purple-400 font-semibold">Security Features:</span>
+              <span className="text-purple-600 dark:text-purple-400 font-semibold">Security:</span>
               <span>HMAC SHA-256 signatures, timestamp-based replay protection, duplicate prevention, and IP whitelisting</span>
             </div>
           </div>

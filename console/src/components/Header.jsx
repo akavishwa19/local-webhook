@@ -25,8 +25,8 @@ const Header = ({ onBack, showBack = false }) => {
                 </svg>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Webhook Dashboard</h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Monitor & Track Events</p>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Local Webhook</h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Monitor & Track Webhooks</p>
               </div>
             </div>
           </div>
