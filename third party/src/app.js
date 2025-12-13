@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import 'dotenv/config';
+import connectDb from "./db/index.js";
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ app.get("/healthz", async (req, res) => {
 import webhookRouter from "./routes/webhook.route.js";
 app.use("/",webhookRouter)
 
-app.listen(port, () => {
+app.listen(port, async () => {
+  await connectDb();
   console.log("serves on http://localhost:" + port);
 });

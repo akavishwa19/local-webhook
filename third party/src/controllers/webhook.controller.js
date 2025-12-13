@@ -1,10 +1,27 @@
 import { createHash } from "../utils/createHash.js";
 import { webhookResponsePayload } from "../consts.js";
+import { v4 as uuidv4 } from "uuid";
+import {
+  logWebhook,
+  fetchWebhooks,
+  fetchWebhookDetails,
+} from "../services/webhook.js";
 
-const makeRecipe = async (req,res)=>{
-    try {
+const makeRecipe = async (req, res) => {
+  try {
     console.log("recieved recipe data:", req.body);
     console.log("recipe is cooking");
+
+    //build success object for persistence
+    const persistentObj = {};
+
+    //store client ip
+    persistentObj.client_ip = req.ip;
+
+    //generate event id
+    const eventId = uuidv4();
+    persistentObj.eventId = eventId;
+
     setTimeout(async () => {
       console.log("cooked creating recipe");
 
@@ -23,6 +40,11 @@ const makeRecipe = async (req,res)=>{
         secret
       );
 
+      persistentObj.signature = hash;
+      persistentObj.payload=webhookResponsePayload;
+      persistentObj.timestamp = timestamp;
+
+
       try {
         const response = await fetch("http://localhost:3000/webhook/recipe", {
           method: "POST",
@@ -36,6 +58,8 @@ const makeRecipe = async (req,res)=>{
 
         const data = await response.json();
         console.log("webhook response: ", data);
+
+        await logWebhook();
 
         return res.status(200).json({
           status: "OK",
@@ -54,8 +78,6 @@ const makeRecipe = async (req,res)=>{
     console.log(error.message);
     return res.status(500).send("server error");
   }
-}
+};
 
-export {
-    makeRecipe
-}
+export { makeRecipe };
