@@ -4,7 +4,7 @@ const webhookPayload = {
   taste: "spicy",
   quantity: 5,
 };
-module.exports = {
+export {
   whitelistedIps,
   webhookPayload,
 };

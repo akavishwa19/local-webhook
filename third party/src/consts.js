@@ -8,6 +8,6 @@ const webhookResponsePayload = {
   },
 };
 
-module.exports={
+export {
     webhookResponsePayload
 }

@@ -1,8 +1,6 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config({ quiet: true });
-const { whitelistedIps, webhookPayload } = require("./consts.js");
-const { verifySignature } = require("./utils/verifySignature.js");
+import express from "express";
+import cors from "cors";
+import 'dotenv/config';
 
 const app = express();
 app.use(express.json());
@@ -10,85 +8,16 @@ app.use(cors());
 
 const port = process.env.PORT;
 
-//prevent multiple requests with same signature in same window (we could have used uuids as well but clash of same hash is very rare , but ideal we should use uuids along with redis rather than in memory sets
-const usedHashes = new Set();
-
 app.get("/healthz", async (req, res) => {
   res.send("healthz works fine for server at port:" + port);
 });
 
-app.post("/start-cooking", async (req, res) => {
-  try {
-    console.log("order is placed");
-    await fetch("http://localhost:3001/make-recipe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(webhookPayload),
-    });
-    return res.status(200).send("order is placed");
-  } catch (error) {
-    console.log("error making http call with\n: ", error.message);
-    return res.status(500).send('"error making http call');
-  }
-});
-
-app.post("/webhook/recipe", async (req, res) => {
-  try {
-    if (!whitelistedIps.includes(req.ip)) {
-      return res
-        .status(403)
-        .json({ status: "NOT ALLOWED", message: "resource not allowed" });
-    }
-
-    //recieved webhook signature that we need to verify on our server to make sure that ok we recieved from the actual third party
-    const webhookSignature = req.headers["x-webhook-signature"];
-
-    //get the timestamo from headers to verify pur signature
-    const webhookTimestamp = req.headers["x-timestamp"];
-
-    //from our envs that we got while registering the webhook for the first time
-    const webhookSecret = process.env.WEBHOOK_SECRET;
-
-    //if the request is of past (significant past meaning it could be of an attacker), just ignore it
-    const now = Date.now();
-    if (Math.abs(now - webhookTimestamp) > 300000) {
-      return res
-        .status(403)
-        .json({ status: "NOT ALLOWED", message: "resource not allowed" });
-    }
-
-    const signatureValidity = verifySignature(
-      JSON.stringify(req.body) + "-" + webhookTimestamp,
-      webhookSecret,
-      webhookSignature
-    );
-
-    //if signature not verified , get out
-    if (!signatureValidity) {
-      return res
-        .status(403)
-        .json({ status: "NOT ALLOWED", message: "resource not allowed" });
-    }
-
-    if (usedHashes.has(webhookSignature)) {
-      return res
-        .status(403)
-        .json({ status: "NOT ALLOWED", message: "resource not allowed" });
-    }
-    usedHashes.add(webhookSignature);
-
-    const recievedData = req.body;
-    console.log("final response: ", recievedData);
-    console.log("order served");
-    return res.status(200).json({ recievedData });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).send("server error");
-  }
-});
+//routes
+import webhookRouter from "./routes/webhhok.route.js";
+app.use("/",webhookRouter)
 
 app.listen(port, () => {
   console.log("serves on http://localhost:" + port);
 });
+
+
