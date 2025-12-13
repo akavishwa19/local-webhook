@@ -3,8 +3,6 @@ import { webhookResponsePayload } from "../consts.js";
 import { v4 as uuidv4 } from "uuid";
 import {
   logWebhook,
-  fetchWebhooks,
-  fetchWebhookDetails,
 } from "../services/webhook.js";
 
 const makeRecipe = async (req, res) => {
@@ -16,15 +14,13 @@ const makeRecipe = async (req, res) => {
     const persistentObj = {};
 
     //store client ip
-    persistentObj.client_ip = req.ip;
+    persistentObj.requester_ip = req.ip;
 
     //generate event id
     const eventId = uuidv4();
-    persistentObj.eventId = eventId;
+    persistentObj.event_id = eventId;
 
     setTimeout(async () => {
-      console.log("cooked creating recipe");
-
       //we add a timestamp into our payload as well as our headers to verify 2 things
       //first , if someone catches our request in between and sends it on our server , it will always work because theres no system to stop this attack
       //we add timestaml in our headers and we will invalidate any request that happens after some period of time , say 5 minutes , so in case we get a request older than 5 minutes , we can simlpy ignore
@@ -41,9 +37,8 @@ const makeRecipe = async (req, res) => {
       );
 
       persistentObj.signature = hash;
-      persistentObj.payload=webhookResponsePayload;
-      persistentObj.timestamp = timestamp;
-
+      persistentObj.payload = webhookResponsePayload;
+      persistentObj.timestamp = timeStamp;
 
       try {
         const response = await fetch("http://localhost:3000/webhook/recipe", {
@@ -59,7 +54,9 @@ const makeRecipe = async (req, res) => {
         const data = await response.json();
         console.log("webhook response: ", data);
 
-        await logWebhook();
+        persistentObj.status = "SUCCESS";
+
+        await logWebhook(persistentObj);
 
         return res.status(200).json({
           status: "OK",
@@ -71,6 +68,14 @@ const makeRecipe = async (req, res) => {
         });
       } catch (error) {
         console.log("error making http call with\n: ", error.message);
+
+        persistentObj.payload = null;
+        persistentObj.signature = null;
+        persistentObj.timestamp = Date.now();
+        persistentObj.status = "ERROR";
+
+        await logWebhook(persistentObj);
+
         return res.status(500).send("server error");
       }
     }, 3000);

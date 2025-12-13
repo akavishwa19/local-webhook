@@ -7,7 +7,7 @@ const logWebhook = async (payload)=>{
 }
 
 const fetchWebhooks = async () =>{
-    const data = await Webhook.find().select("event_id client_ip status createdAt").sort({createdAt:-1});
+    const data = await Webhook.find().select("event_id requester_ip status createdAt").sort({createdAt:-1});
     return data; 
 }
 
