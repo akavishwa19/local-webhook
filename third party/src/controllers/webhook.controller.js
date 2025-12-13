@@ -3,6 +3,8 @@ import { webhookResponsePayload } from "../consts.js";
 import { v4 as uuidv4 } from "uuid";
 import {
   logWebhook,
+  fetchWebhooks,
+  fetchWebhookDetails,
 } from "../services/webhook.js";
 
 const makeRecipe = async (req, res) => {
@@ -85,4 +87,24 @@ const makeRecipe = async (req, res) => {
   }
 };
 
-export { makeRecipe };
+const fetchAllWebhooks = async (req, res) => {
+  try {
+    const data = await fetchWebhooks();
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).send("server error");
+  }
+};
+
+const fetchSingleWebhook = async (req, res) => {
+  try {
+    const data = await fetchWebhookById(req.query.id);
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).send("server error");
+  }
+};
+
+export { makeRecipe, fetchAllWebhooks, fetchSingleWebhook };
