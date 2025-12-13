@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import {
   logWebhook,
   fetchWebhooks,
-  fetchWebhookDetails,
 } from "../services/webhook.js";
 
 const makeRecipe = async (req, res) => {
