@@ -1,35 +1,14 @@
-# ⚡ Local Webhook Dashboard
+# ⚡ Local Webhook
 
-<div align="center">
 
-![Node.js](https://img.shields.io/badge/Node.js-18+-green?style=for-the-badge&logo=node.js)
-![React](https://img.shields.io/badge/React-19.2-blue?style=for-the-badge&logo=react)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-green?style=for-the-badge&logo=mongodb)
-![Express](https://img.shields.io/badge/Express-API-black?style=for-the-badge&logo=express)
+
 
 **A secure, real-time webhook monitoring system with signature verification, replay protection, and a beautiful modern dashboard.**
 
-[Features](#-features) • [Architecture](#-architecture) • [Installation](#-installation) • [Usage](#-usage) • [API Reference](#-api-reference)
 
-</div>
 
 ---
 
-## 📋 Table of Contents
-
-- [Overview](#-overview)
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Usage](#-usage)
-- [API Reference](#-api-reference)
-- [Security](#-security)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Contributing](#-contributing)
-
----
 
 ## 🎯 Overview
 
@@ -382,141 +361,6 @@ const signature = createHmac('sha256', secret)
 
 Only requests from whitelisted IP addresses are accepted. Configure in `main/src/consts.js`.
 
-### Best Practices
 
-1. **Never commit `.env` files** - Keep secrets secure
-2. **Use strong secrets** - Generate random, long strings for `WEBHOOK_SECRET`
-3. **Rotate secrets regularly** - Update secrets periodically
-4. **Monitor logs** - Check for suspicious activity
-5. **Use HTTPS in production** - Encrypt all webhook traffic
-
----
-
-## 🛠️ Tech Stack
-
-### Backend
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MongoDB** - Database for event logging
-- **Mongoose** - MongoDB ODM
-- **dotenv** - Environment variable management
-
-### Frontend
-- **React 19.2** - UI framework
-- **React Router** - Client-side routing
-- **Tailwind CSS** - Utility-first CSS framework
-- **Vite** - Build tool and dev server
-- **shadcn/ui** - Modern component design system
-
-### Security
-- **HMAC SHA-256** - Signature algorithm
-- **UUID** - Unique event identifiers
-- **Timestamp validation** - Replay protection
-
----
-
-## 📁 Project Structure
-
-```
-webhook/
-├── main/                    # Main server
-│   ├── src/
-│   │   ├── app.js          # Express app setup
-│   │   ├── consts.js       # Constants (IP whitelist, etc.)
-│   │   ├── controllers/    # Request handlers
-│   │   ├── routes/         # API routes
-│   │   └── utils/          # Utilities (hash, signature verification)
-│   ├── package.json
-│   └── sample.env
-│
-├── third party/             # Third-party server
-│   ├── src/
-│   │   ├── app.js          # Express app setup
-│   │   ├── consts.js       # Webhook payload templates
-│   │   ├── controllers/    # Request handlers
-│   │   ├── db/             # Database connection
-│   │   ├── models/         # Mongoose models
-│   │   ├── routes/         # API routes
-│   │   ├── services/       # Business logic
-│   │   └── utils/          # Utilities
-│   ├── package.json
-│   └── sample.env
-│
-├── console/                 # Dashboard frontend
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── contexts/       # React contexts (theme)
-│   │   ├── App.jsx         # Main app component
-│   │   └── main.jsx        # Entry point
-│   ├── package.json
-│   └── tailwind.config.js
-│
-└── README.md
-```
-
----
-
-## 🎨 Dashboard Features
-
-### Real-Time Monitoring
-- Automatic refresh every 5 seconds
-- Live status updates
-- Event count tracking
-
-### Webhook Cards
-- Expandable details view
-- Status badges (SUCCESS/ERROR)
-- Formatted timestamps
-- IP address tracking
-- Full payload display
-- Signature verification details
-
-### Actions
-- **Start Cooking** - Trigger new webhook events
-- **Clear All Data** - Remove all webhook records (with confirmation)
-- **Refresh** - Manually update the webhook list
-- **Theme Toggle** - Switch between light and dark modes
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
-3. **Commit your changes** (`git commit -m 'Add some amazing feature'`)
-4. **Push to the branch** (`git push origin feature/amazing-feature`)
-5. **Open a Pull Request**
-
-### Development Guidelines
-
-- Follow existing code style
-- Add comments for complex logic
-- Update README for new features
-- Test all changes thoroughly
-- Ensure security best practices
-
----
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-## 🙏 Acknowledgments
-
-- Built with modern web technologies
-- Inspired by best practices in webhook security
-- Designed for production-ready deployments
-
----
-
-<div align="center">
-
-**Made with ⚡ by [Your Name]**
-
-[Report Bug](https://github.com/yourusername/webhook/issues) • [Request Feature](https://github.com/yourusername/webhook/issues)
 
 </div>
