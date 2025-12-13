@@ -4,11 +4,14 @@ const { Schema } = mongoose;
 const webhookSchema = new Schema(
   {
     event_id: String,
-    client_ip: String,
+    requester_ip: String,
     payload: Object,
     signature: String,
-    timestamp: String,
-    status: String,
+    timestamp: Number,
+    status: {
+      type:String,
+      enum:["ERROR","SUCCESS"]
+    },
   },
   { timestamps: true }
 );
