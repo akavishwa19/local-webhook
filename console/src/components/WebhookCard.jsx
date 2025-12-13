@@ -36,46 +36,46 @@ const WebhookCard = ({ webhook }) => {
   };
 
   const statusColors = {
-    SUCCESS: 'bg-green-500/20 text-green-400 border-green-500/30',
-    ERROR: 'bg-red-500/20 text-red-400 border-red-500/30'
+    SUCCESS: 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20',
+    ERROR: 'bg-destructive/10 text-destructive border-destructive/20'
   };
 
   return (
-    <div className="group bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700/50 p-6 hover:border-blue-500/50 dark:hover:border-blue-500/30 hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+    <div className="group relative rounded-lg border bg-card text-card-foreground shadow-sm p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 mb-3 flex-wrap">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate">
+            <h3 className="text-base font-semibold truncate">
               {webhook.event_id || 'N/A'}
             </h3>
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold border flex-shrink-0 ${statusColors[webhook.status] || 'bg-gray-500/20 text-gray-400 border-gray-500/30'}`}>
+            <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors flex-shrink-0 ${statusColors[webhook.status] || 'bg-muted text-muted-foreground border-border'}`}>
               {webhook.status || 'UNKNOWN'}
             </span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-              <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
               </svg>
               <span className="font-medium">IP:</span>
-              <span className="text-gray-900 dark:text-gray-200">{webhook.requester_ip || 'N/A'}</span>
+              <span className="text-foreground">{webhook.requester_ip || 'N/A'}</span>
             </div>
-            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-              <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span className="font-medium">Created:</span>
-              <span className="text-gray-900 dark:text-gray-200">{formatDate(webhook.createdAt)}</span>
+              <span className="text-foreground">{formatDate(webhook.createdAt)}</span>
             </div>
           </div>
         </div>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="ml-4 p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0"
+          className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 flex-shrink-0"
           aria-label="Toggle details"
         >
           <svg 
-            className={`w-5 h-5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} 
+            className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} 
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24"
@@ -86,45 +86,45 @@ const WebhookCard = ({ webhook }) => {
       </div>
 
       {isExpanded && (
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4 animate-in slide-in-from-top-2 duration-200">
+        <div className="mt-4 pt-4 border-t space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-3">
               <div>
-                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Event ID</label>
-                <p className="mt-1 text-sm text-gray-900 dark:text-gray-100 font-mono bg-gray-50 dark:bg-gray-900/50 p-2 rounded border border-gray-200 dark:border-gray-700 break-all">
+                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Event ID</label>
+                <p className="text-sm font-mono bg-muted/50 p-2.5 rounded-md border break-all">
                   {webhook.event_id || 'N/A'}
                 </p>
               </div>
               <div>
-                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Requester IP</label>
-                <p className="mt-1 text-sm text-gray-900 dark:text-gray-100 font-mono bg-gray-50 dark:bg-gray-900/50 p-2 rounded border border-gray-200 dark:border-gray-700">
+                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Requester IP</label>
+                <p className="text-sm font-mono bg-muted/50 p-2.5 rounded-md border">
                   {webhook.requester_ip || 'N/A'}
                 </p>
               </div>
               <div>
-                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Timestamp</label>
-                <p className="mt-1 text-sm text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900/50 p-2 rounded border border-gray-200 dark:border-gray-700">
+                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Timestamp</label>
+                <p className="text-sm bg-muted/50 p-2.5 rounded-md border">
                   {formatTimestamp(webhook.timestamp)}
                 </p>
               </div>
             </div>
             <div className="space-y-3">
               <div>
-                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Created At</label>
-                <p className="mt-1 text-sm text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900/50 p-2 rounded border border-gray-200 dark:border-gray-700">
+                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Created At</label>
+                <p className="text-sm bg-muted/50 p-2.5 rounded-md border">
                   {formatDate(webhook.createdAt)}
                 </p>
               </div>
               <div>
-                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Updated At</label>
-                <p className="mt-1 text-sm text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-900/50 p-2 rounded border border-gray-200 dark:border-gray-700">
+                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Updated At</label>
+                <p className="text-sm bg-muted/50 p-2.5 rounded-md border">
                   {formatDate(webhook.updatedAt)}
                 </p>
               </div>
               <div>
-                <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Status</label>
+                <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Status</label>
                 <p className="mt-1">
-                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${statusColors[webhook.status] || 'bg-gray-500/20 text-gray-400 border-gray-500/30'}`}>
+                  <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors ${statusColors[webhook.status] || 'bg-muted text-muted-foreground border-border'}`}>
                     {webhook.status || 'UNKNOWN'}
                   </span>
                 </p>
@@ -134,8 +134,8 @@ const WebhookCard = ({ webhook }) => {
           
           {webhook.signature && (
             <div>
-              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Signature</label>
-              <p className="mt-1 text-xs text-gray-900 dark:text-gray-100 font-mono bg-gray-50 dark:bg-gray-900/50 p-3 rounded border border-gray-200 dark:border-gray-700 break-all">
+              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Signature</label>
+              <p className="text-xs font-mono bg-muted/50 p-3 rounded-md border break-all">
                 {webhook.signature}
               </p>
             </div>
@@ -143,8 +143,8 @@ const WebhookCard = ({ webhook }) => {
 
           {webhook.payload && (
             <div>
-              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Payload</label>
-              <pre className="mt-1 text-xs text-gray-900 dark:text-gray-100 font-mono bg-gray-50 dark:bg-gray-900/50 p-3 rounded border border-gray-200 dark:border-gray-700 overflow-x-auto">
+              <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1.5 block">Payload</label>
+              <pre className="text-xs font-mono bg-muted/50 p-3 rounded-md border overflow-x-auto">
                 {JSON.stringify(webhook.payload, null, 2)}
               </pre>
             </div>
