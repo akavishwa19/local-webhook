@@ -7,16 +7,12 @@ const logWebhook = async (payload)=>{
 }
 
 const fetchWebhooks = async () =>{
-    const data = await Webhook.find().select("event_id requester_ip status createdAt").sort({createdAt:-1});
+    const data = await Webhook.find().sort({createdAt:-1});
     return data; 
 }
 
-const fetchWebhookDetails = async (id) =>{
-    const data =await Webhook.findById(id);
-    return data;
-}
 
 
 export {
-    logWebhook,fetchWebhooks,fetchWebhookDetails
+    logWebhook,fetchWebhooks
 }
