@@ -11,8 +11,13 @@ const fetchWebhooks = async () =>{
     return data; 
 }
 
+const clearAllWebhooks = async () =>{
+    const data = await Webhook.deleteMany();
+    return data; 
+}
+
 
 
 export {
-    logWebhook,fetchWebhooks
+    logWebhook,fetchWebhooks,clearAllWebhooks
 }

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   logWebhook,
   fetchWebhooks,
+  clearAllWebhooks
 } from "../services/webhook.js";
 
 const makeRecipe = async (req, res) => {
@@ -96,5 +97,15 @@ const fetchAllWebhooks = async (req, res) => {
   }
 };
 
+const clearAll = async (req, res) => {
+  try {
+    const data = await clearAllWebhooks();
+    return res.status(200).json(data);
+  } catch (error) {
+    //console.log(error.message);
+    return res.status(500).send("server error");
+  }
+};
 
-export { makeRecipe, fetchAllWebhooks };
+
+export { makeRecipe, fetchAllWebhooks , clearAll };
